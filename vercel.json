@@ -1,18 +1,10 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": ".next",
+  "outputDirectory": ".next/standalone",
+  "devCommand": "next dev -p 3000",
+  "installCommand": "npm ci",
   "env": {
     "NODE_ENV": "production"
   },
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    }
-  ]
+  "nodeVersion": "20.x"
 }
