@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentsFlow Share Links</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg2: #0f172a;
+      --card: rgba(255,255,255,0.05);
+      --border: rgba(255,255,255,0.12);
+      --text: #e5eefc;
+      --muted: #94a3b8;
+      --indigo: #6366f1;
+      --cyan: #06b6d4;
+      --green: #10b981;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, rgba(99,102,241,0.16), transparent 35%), linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .container {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 56px 0 72px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border: 1px solid rgba(99,102,241,0.35);
+      background: rgba(99,102,241,0.1);
+      color: #c7d2fe;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #818cf8;
+      box-shadow: 0 0 18px #818cf8;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(38px, 7vw, 64px);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+    p.lead {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 18px;
+      margin: 0 0 34px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 26px;
+      backdrop-filter: blur(8px);
+    }
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+    }
+    .card p {
+      margin: 0 0 20px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      color: white;
+      background: linear-gradient(90deg, var(--indigo), var(--cyan));
+      box-shadow: 0 10px 30px rgba(99,102,241,0.28);
+    }
+    .link-list {
+      margin-top: 28px;
+      padding: 20px 22px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+    }
+    .link-list h3 {
+      margin: 0 0 14px;
+      font-size: 18px;
+    }
+    .link-list a {
+      display: block;
+      color: #a5f3fc;
+      text-decoration: none;
+      margin: 8px 0;
+      word-break: break-all;
+    }
+    .status {
+      margin-top: 18px;
+      color: #86efac;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge"><span class="dot"></span> AgentsFlow share hub</div>
+    <h1>Sharable HTML Links</h1>
+    <p class="lead">Use these public HTML pages to share the latest static previews with your team while the main deployment is being fixed.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h2>AgentsFlow Demo Snapshot</h2>
+        <p>A standalone HTML version of the current `agentsflow-demo` homepage for quick review and sharing.</p>
+        <a class="button" href="./agentsflow-demo.html">Open demo snapshot</a>
+      </div>
+      <div class="card">
+        <h2>Share Hub</h2>
+        <p>This index page can be shared directly so your team always has one place to open the latest HTML previews.</p>
+        <a class="button" href="./index.html">Open this hub</a>
+      </div>
+    </div>
+
+    <div class="link-list">
+      <h3>Public links</h3>
+      <a href="https://harshitinfiniteinsight.github.io/AgentsFlow/">https://harshitinfiniteinsight.github.io/AgentsFlow/</a>
+      <a href="https://harshitinfiniteinsight.github.io/AgentsFlow/agentsflow-demo.html">https://harshitinfiniteinsight.github.io/AgentsFlow/agentsflow-demo.html</a>
+      <div class="status">After the GitHub Pages deployment completes, these links will be live for your team.</div>
+    </div>
+  </div>
+</body>
+</html>

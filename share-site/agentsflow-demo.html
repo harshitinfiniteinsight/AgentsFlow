@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentsFlow Demo</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg2: #0f172a;
+      --card: rgba(255,255,255,0.05);
+      --border: rgba(255,255,255,0.12);
+      --text: #e5eefc;
+      --muted: #94a3b8;
+      --indigo: #6366f1;
+      --cyan: #06b6d4;
+      --green: #10b981;
+      --purple: #8b5cf6;
+      --red: #ef4444;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, rgba(99,102,241,0.16), transparent 35%), linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(1180px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 72px 0 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border: 1px solid rgba(99,102,241,0.35);
+      background: rgba(99,102,241,0.1);
+      color: #c7d2fe;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #818cf8;
+      box-shadow: 0 0 18px #818cf8;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 72px);
+      line-height: 0.98;
+      margin: 0 0 20px;
+      letter-spacing: -0.04em;
+    }
+
+    .gradient {
+      background: linear-gradient(90deg, #818cf8 0%, #22d3ee 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 640px;
+      margin-bottom: 28px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .button {
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .button.primary {
+      background: linear-gradient(90deg, var(--indigo), var(--cyan));
+      color: white;
+      box-shadow: 0 10px 30px rgba(99,102,241,0.28);
+    }
+
+    .button.secondary {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.16);
+      color: white;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 22px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      color: white;
+    }
+
+    .stat span {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .diagram {
+      padding: 28px;
+      background: linear-gradient(180deg, rgba(30,41,59,0.9), rgba(15,23,42,0.9));
+      border: 1px solid rgba(99,102,241,0.22);
+      border-radius: 28px;
+      box-shadow: 0 30px 80px rgba(2,6,23,0.45);
+    }
+
+    .diagram-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      align-items: center;
+    }
+
+    .node, .center {
+      border-radius: 18px;
+      text-align: center;
+      padding: 18px 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: #cbd5e1;
+      font-weight: 700;
+    }
+
+    .center {
+      grid-column: 2 / 3;
+      grid-row: 2 / 3;
+      padding: 26px 14px;
+      background: rgba(99,102,241,0.14);
+      border-color: rgba(99,102,241,0.38);
+      color: white;
+    }
+
+    .node.top { grid-column: 2 / 3; }
+    .node.left { grid-column: 1 / 2; grid-row: 2 / 3; }
+    .node.right { grid-column: 3 / 4; grid-row: 2 / 3; }
+    .node.bottom { grid-column: 2 / 3; grid-row: 3 / 4; }
+
+    section { padding: 72px 0; }
+
+    .section-title {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 34px;
+    }
+
+    .section-title h2 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .section-title p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 24px;
+      backdrop-filter: blur(8px);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .stat-value {
+      font-size: 40px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .pillars .card small {
+      display: inline-block;
+      margin-top: 16px;
+      font-weight: 700;
+    }
+
+    .c-cyan { color: #22d3ee; }
+    .c-purple { color: #c084fc; }
+    .c-red { color: #f87171; }
+    .c-green { color: #34d399; }
+    .c-yellow { color: #fbbf24; }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .service-card ul {
+      padding-left: 18px;
+      color: #cbd5e1;
+      margin: 18px 0 0;
+    }
+
+    .service-card li { margin: 10px 0; }
+
+    .footer {
+      padding: 28px 0 48px;
+      text-align: center;
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      margin-top: 24px;
+      color: #a5f3fc;
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .grid-4,
+      .services,
+      .stats-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container { width: min(100% - 32px, 1180px); }
+      .hero { min-height: auto; padding-top: 56px; }
+      .hero-grid,
+      .grid-4,
+      .services,
+      .stats-row {
+        grid-template-columns: 1fr;
+      }
+      .actions { flex-direction: column; align-items: stretch; }
+      .button { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="badge"><span class="dot"></span> Introducing AgentsFlow v3.0</div>
+        <h1>The Enterprise<br><span class="gradient">AI Control Plane</span></h1>
+        <p class="lead">
+          While your teams build and deploy AI agents, AgentsFlow governs them. One platform to discover, govern, enforce, and monitor every AI agent in your enterprise.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="#pillars">See It in Action →</a>
+          <a class="button secondary" href="./index.html">Back to share hub</a>
+        </div>
+        <div class="stats-row">
+          <div class="stat"><strong>-34%</strong><span>Cost Reduction</span></div>
+          <div class="stat"><strong>340ms</strong><span>Avg Latency</span></div>
+          <div class="stat"><strong>100%</strong><span>Policy Enforcement</span></div>
+          <div class="stat"><strong>98%</strong><span>Compliance Ready</span></div>
+        </div>
+      </div>
+
+      <div class="diagram">
+        <div class="diagram-grid">
+          <div class="node top">Business Apps</div>
+          <div class="node left">Gateways</div>
+          <div class="center">AgentsFlow<br><span style="font-size:12px;color:#a5b4fc;font-weight:600;">Discover · Govern · Enforce · Monitor</span></div>
+          <div class="node right">SaaS AI</div>
+          <div class="node bottom">Cloud / Models</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>The AI Governance Crisis is <span class="gradient">Already Here</span></h2>
+        <p>While enterprises rush to deploy AI agents, they are creating ungoverned ecosystems that put compliance, costs, and customer trust at risk.</p>
+      </div>
+      <div class="grid-4">
+        <div class="card"><div class="stat-value c-red">78%</div><p>of enterprises have untracked AI costs.</p></div>
+        <div class="card"><div class="stat-value c-yellow">2.3s</div><p>average AI latency without governance.</p></div>
+        <div class="card"><div class="stat-value c-cyan">23</div><p>unmanaged Shadow AI tools per company on average.</p></div>
+        <div class="card"><div class="stat-value c-purple">12</div><p>open policy violations in a typical enterprise.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pillars" class="pillars">
+    <div class="container">
+      <div class="section-title">
+        <h2>Four Pillars. One Platform.</h2>
+        <p>AgentsFlow is built around four capabilities that together form a complete AI governance system for your enterprise.</p>
+      </div>
+      <div class="grid-4">
+        <div class="card">
+          <h3 class="c-cyan">Discover</h3>
+          <p>Find every AI agent and app across your organisation, including shadow AI outside IT visibility.</p>
+          <small class="c-cyan">247 apps found</small>
+        </div>
+        <div class="card">
+          <h3 class="c-purple">Govern</h3>
+          <p>Set policies, rules, and guardrails for how AI can and cannot be used inside your company.</p>
+          <small class="c-purple">100% policies enforced</small>
+        </div>
+        <div class="card">
+          <h3 class="c-red">Enforce</h3>
+          <p>Automatically block or flag anything that breaks your rules in real time, before damage is done.</p>
+          <small class="c-red">0 violations slip through</small>
+        </div>
+        <div class="card">
+          <h3 class="c-green">Monitor</h3>
+          <p>Track costs, performance, compliance, and risk across all AI systems continuously.</p>
+          <small class="c-green">340ms avg latency</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>Two Ways to Work With Us</h2>
+        <p>You get all four pillars regardless of which path you choose. The difference is how we deliver them.</p>
+      </div>
+      <div class="services">
+        <div class="card service-card">
+          <h3>Advisory &amp; Architecture</h3>
+          <p>Strategic guidance for companies that want a governance framework designed and ready to deploy.</p>
+          <ul>
+            <li>AI governance framework design</li>
+            <li>Industry-specific compliance blueprints</li>
+            <li>Cost and latency optimization models</li>
+            <li>Executive-level governance insights</li>
+          </ul>
+        </div>
+        <div class="card service-card">
+          <h3>Managed Services</h3>
+          <p>Hands-on management for companies that want governance fully handled by our team.</p>
+          <ul>
+            <li>24/7 monitoring and alerting</li>
+            <li>Human-in-the-loop validation</li>
+            <li>Automated change management</li>
+            <li>Ongoing compliance maintenance</li>
+          </ul>
+        </div>
+      </div>
+      <a class="back-link" href="./index.html">← Back to share hub</a>
+    </div>
+  </section>
+
+  <div class="footer">
+    Static HTML snapshot for AgentsFlow Demo.
+  </div>
+</body>
+</html>
